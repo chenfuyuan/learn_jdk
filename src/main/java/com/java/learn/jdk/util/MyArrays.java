@@ -25,14 +25,17 @@ public class MyArrays {
         } else if (e1 instanceof byte[] && e2 instanceof byte[]) {
             //a1,a2都为byte数组
             eq = equals((byte[]) e1, (byte[]) e2);
-        } else if (e1 instanceof short[] && e2 instanceof short[]) {
+        } else if (e1 instanceof char[] && e2 instanceof char[]) {
+            //a1,a2都为char数组
+            eq = equals((char[]) e1, (char[]) e2);
+        }else if (e1 instanceof short[] && e2 instanceof short[]) {
             //a1,a2都为short数组
             eq = equals((short[]) e1, (short[]) e2);
         } else if (e1 instanceof int[] && e2 instanceof int[]) {
             //a1,a2都为int数组
             eq = equals((int[]) e1, (int[]) e2);
         } else if (e1 instanceof long[] && e2 instanceof long[]) {
-            //a1,a2都为long数组
+            //a1,a2都为整数数组
             eq = equals((long[]) e1, (long[]) e2);
         } else if (e1 instanceof float[] && e2 instanceof float[]) {
             //a1,a2都为float数组
@@ -48,6 +51,15 @@ public class MyArrays {
         }
 
         return eq;
+    }
+
+    /**
+     * 判断对象是否为整数数组(short,int,long)
+     * @param array 数组对象
+     * @return 对象是否为整数数组
+     */
+    public static boolean isIntergerArray(Object array) {
+        return array instanceof short[] || array instanceof int[] || array instanceof long[];
     }
 
     /**
@@ -115,6 +127,37 @@ public class MyArrays {
         return true;
     }
 
+    /**
+     * 判断两个char数组对象是否相等
+     * @param a1 数组对象1
+     * @param a2 数组对象2
+     * @return 两对象是否相等
+     */
+    public static boolean equals(char[] a1, char[] a2) {
+        //判断地址是否相等
+        if (a1 == a2) {
+            return true;
+        }
+
+        //如果其中一个对象为空，返回false
+        if (a1 == null || a2 == null) {
+            return false;
+        }
+
+        //判断数组长度是否相等
+        int length = a1.length;
+        if (a2.length != length) {
+            return false;
+        }
+
+        //判断其中每个索引的元素是否相等
+        for (int i = 0; i < length; i++) {
+            if (a1[i] != a2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * 判断两个short数组对象是否相等
