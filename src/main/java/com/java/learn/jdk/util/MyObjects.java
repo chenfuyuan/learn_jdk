@@ -54,4 +54,14 @@ public final class MyObjects {
         return MyArrays.deepEquals0(obj1, obj2);
     }
 
+
+    /**
+     * 根据对象生成哈希值
+     * 如果对象为空,返回0,否则调用对象的hashCode()方法
+     * @param obj 对象
+     * @return 哈希值
+     */
+    public static int hashCode(Object obj) {
+        return obj == null ? 0 : obj.hashCode();
+    }
 }
