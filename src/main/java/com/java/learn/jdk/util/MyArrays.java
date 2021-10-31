@@ -17,7 +17,6 @@ public class MyArrays {
     public static boolean deepEquals0(Object e1, Object e2) {
         assert e1!=null;    //a1不为空，为空报错，避免空指针
         boolean eq;    //记录
-
         //根据不同类型判断
         if (e1 instanceof Object[] && e2 instanceof Object[]) {
             //e1,a2都为Object数组
@@ -62,6 +61,8 @@ public class MyArrays {
         return array instanceof short[] || array instanceof int[] || array instanceof long[];
     }
 
+
+    //start===============================equals 基本数据类型(除浮点型)==============================
     /**
      * 判断两个boolean数组对象是否相等
      * @param a1 数组对象1
@@ -254,8 +255,9 @@ public class MyArrays {
         }
         return true;
     }
+    //end===============================equals 基本数据类型(除浮点型)==============================
 
-
+    //start===============================equals 基本数据类型(浮点型)==============================
     /**
      * 判断两个float数组对象是否相等
      * @param a1 数组对象1
@@ -321,7 +323,9 @@ public class MyArrays {
         }
         return true;
     }
+    //end===============================equals 基本数据类型(浮点型)==============================
 
+    //start===============================equals Object数据类型==============================
     /**
      * 深层判断，两个Objects是否相等
      * @param a1 数组1
@@ -362,4 +366,5 @@ public class MyArrays {
         }
         return true;
     }
+    //end===============================equals Object数据类型==============================
 }
