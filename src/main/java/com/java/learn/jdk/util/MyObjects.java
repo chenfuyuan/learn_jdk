@@ -1,5 +1,7 @@
 package com.java.learn.jdk.util;
 
+import java.util.function.Consumer;
+
 /**
  * @Description: Objects工具类
  * @Author: chenfuyuan
@@ -63,5 +65,21 @@ public final class MyObjects {
      */
     public static int hashCode(Object obj) {
         return obj == null ? 0 : obj.hashCode();
+    }
+
+
+    /**
+     * 判断对象是否为null
+     * 如果对象为null，抛出NullPointerException
+     * @param obj 对象
+     * @param <T> 引用对象的类型
+     * @return 如果对象不为null，返回该对象
+     * @throws NullPointerException 如果对象为null
+     */
+    public static <T> T requireNonNull(T obj) {
+        if (obj == null) {
+            throw new NullPointerException();
+        }
+        return obj;
     }
 }
