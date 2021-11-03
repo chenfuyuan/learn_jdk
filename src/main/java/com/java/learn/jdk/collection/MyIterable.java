@@ -1,6 +1,5 @@
-package com.java.learn.jdk.lang;
+package com.java.learn.jdk.collection;
 
-import com.java.learn.jdk.util.MyIterator;
 import com.java.learn.jdk.util.MyObjects;
 
 import java.util.function.Consumer;

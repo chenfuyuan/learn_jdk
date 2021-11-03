@@ -1,4 +1,4 @@
-package com.java.learn.jdk.util;
+package com.java.learn.jdk.collection;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -11,7 +11,7 @@ import java.util.function.Predicate;
  * @Author: chenfuyuan
  * @Date: 2021/10/30 22:32
  */
-public interface MyCollection<T> extends Iterable<T> {
+public interface MyCollection<T> extends MyIterable<T> {
 
     /**
      * 返回集合中的元素数量,如果数量大于int类型可表示的最大的值，则返回int的最大值( Integer.MAX_VALUE)
@@ -88,7 +88,7 @@ public interface MyCollection<T> extends Iterable<T> {
     default boolean removeIf(Predicate<? super T> filter) {
         Objects.requireNonNull(filter);
         boolean removed = false;
-        final Iterator<T> each = iterator();
+        final MyIterator<T> each = iterator();
         while (each.hasNext()) {
             if (filter.test(each.next())) {
                 each.remove();
