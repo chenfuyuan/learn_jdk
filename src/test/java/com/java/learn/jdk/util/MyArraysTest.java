@@ -3,6 +3,8 @@ package com.java.learn.jdk.util;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * @Description: 测试Arrays工具类
  * @Author: chenfuyuan
@@ -40,5 +42,13 @@ public class MyArraysTest {
         eq = MyArrays.deepEquals0(int_array_01, long_array_01);
         System.out.println("int[] and long[](整数数组，类型不同，元素相同):"+eq);
 
+    }
+
+    @Test
+    public void copyArray() {
+        String[] array = {"1", "2", "3", "4"};
+        String[] copyArrays = MyArrays.copyOf(array, 3);
+        System.out.println("originArray:" + MyArrays.toString(array));
+        System.out.println("copyArray:" + MyArrays.toString(copyArrays));
     }
 }

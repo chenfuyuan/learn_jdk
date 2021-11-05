@@ -3,6 +3,7 @@ package com.java.learn.jdk.collection.impl;
 import com.java.learn.jdk.collection.MyCollection;
 import com.java.learn.jdk.collection.MyIterator;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
@@ -34,5 +35,16 @@ public abstract class MyAbstractCollection<T> implements MyCollection<T> {
         return false;
     }
 
+    @Override
+    public T[] toArray() {
+        T[] result = (T[]) new Object[size()];
+        MyIterator<T> iterator = iterator();
+        for (int i = 0; i < result.length; i++) {
+            if (!iterator.hasNext()) {
+                return Arrays.copyOf(result, i);
+            }
+        }
 
+        return result;
+    }
 }
