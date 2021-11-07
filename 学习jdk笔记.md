@@ -1,6 +1,6 @@
 jdk源码解析
 
-# Collection
+# java.lang
 
 ## interface Interable
 
@@ -21,7 +21,11 @@ public interface Iterable<T>{
 }
 ```
 
+# java.util
+
 ## class Objects
+
+针对Object对象的各种工具方法
 
 ### 所在包
 
@@ -99,7 +103,9 @@ public static boolean equals(Object a, Object b) {
 
 ## class Arrays
 
- ### 所在包
+针对数组对象的各种工具方法
+
+### 所在包
 
 java.util
 
@@ -123,177 +129,177 @@ java.util
 
 2. 针对不同类型数组进行判断
 
-   - 使用``instance``关键字，判断数据类型，强转成对应对象调用不同的判断方法 进行判断
+    - 使用``instance``关键字，判断数据类型，强转成对应对象调用不同的判断方法 进行判断
 
-     ```java
-        /**
-          * 判断 两个对象是否相等
-          * 如果对象为数组，则针对每个元素判断是否相等
-          * @param e1 对象1
-          * @param e2 对象2
-          * @return 两对象是否相等
-          */
-         public static boolean deepEquals0(Object e1, Object e2) {
-             assert e1!=null;    //a1不为空，为空报错，避免空指针
-             boolean eq;    //记录
-             //根据不同类型判断
-             if (e1 instanceof Object[] && e2 instanceof Object[]) {
-                 //e1,a2都为Object数组
-                 eq = deepEquals((Object[]) e1, (Object[]) e2);
-             } else if (e1 instanceof byte[] && e2 instanceof byte[]) {
-                 //a1,a2都为byte数组
-                 eq = equals((byte[]) e1, (byte[]) e2);
-             } else if (e1 instanceof char[] && e2 instanceof char[]) {
-                 //a1,a2都为char数组
-                 eq = equals((char[]) e1, (char[]) e2);
-             }else if (e1 instanceof short[] && e2 instanceof short[]) {
-                 //a1,a2都为short数组
-                 eq = equals((short[]) e1, (short[]) e2);
-             } else if (e1 instanceof int[] && e2 instanceof int[]) {
-                 //a1,a2都为int数组
-                 eq = equals((int[]) e1, (int[]) e2);
-             } else if (e1 instanceof long[] && e2 instanceof long[]) {
-                 //a1,a2都为整数数组
-                 eq = equals((long[]) e1, (long[]) e2);
-             } else if (e1 instanceof float[] && e2 instanceof float[]) {
-                 //a1,a2都为float数组
-                 eq = equals((float[]) e1, (float[]) e2);
-             } else if (e1 instanceof double[] && e2 instanceof double[]) {
-                 //a1,a2都为double数组
-                 eq = equals((double[]) e1, (double[]) e2);
-             } else if (e1 instanceof boolean[] && e2 instanceof boolean[]) {
-                 //a1,a2都为boolean数组
-                 eq = equals((boolean[]) e1, (boolean[]) e2);
-             } else {
-                 eq = e1.equals(e2);
-             }
-     
-             return eq;
-         }
-     ```
-
-     
-
-   - 当对象类型为``Object``时，需要递归调用``deepEquals0()``方法。因为``Object``类型可能为数组类型。
-
-     ```java
-     //============Object类型==================
+      ```java
          /**
-          * 深层判断，两个Objects是否相等
-          * @param a1 数组1
-          * @param a2 数组2
-          * @return 两对象是否相等
-          */
-         private static boolean deepEquals(Object[] a1, Object[] a2) {
-             //地址是否相等
-             if (a1 == a2) {
-                 return true;
-             }
-     
-             //其中一个为空，返回false
-             if (a1 == null || a2 == null) {
-                 return false;
-             }
-     
-             //判断数组长度是否相等
-             if (a1.length != a2.length) {
-                 return false;
-             }
-     
-             //针对每个元素判断相等
-             for (int i = 0,length = a1.length; i < length; i++) {
-                 Object e1 = a1[i];
-                 Object e2 = a2[i];
-                 if (e1 == e2) {
-                     return true;
-                 }
-                 if (e1 == null || e2 == null) {
-                     return false;
-                 }
-                 //因为元素 可能为数组对象，所以调用deepEquals0进行判断
-                 boolean eq = deepEquals0(e1, e2);
-                 if (!eq) {
-                     return false;
-                 }
-             }
-             return true;
-         }
-     ```
+           * 判断 两个对象是否相等
+           * 如果对象为数组，则针对每个元素判断是否相等
+           * @param e1 对象1
+           * @param e2 对象2
+           * @return 两对象是否相等
+           */
+          public static boolean deepEquals0(Object e1, Object e2) {
+              assert e1!=null;    //a1不为空，为空报错，避免空指针
+              boolean eq;    //记录
+              //根据不同类型判断
+              if (e1 instanceof Object[] && e2 instanceof Object[]) {
+                  //e1,a2都为Object数组
+                  eq = deepEquals((Object[]) e1, (Object[]) e2);
+              } else if (e1 instanceof byte[] && e2 instanceof byte[]) {
+                  //a1,a2都为byte数组
+                  eq = equals((byte[]) e1, (byte[]) e2);
+              } else if (e1 instanceof char[] && e2 instanceof char[]) {
+                  //a1,a2都为char数组
+                  eq = equals((char[]) e1, (char[]) e2);
+              }else if (e1 instanceof short[] && e2 instanceof short[]) {
+                  //a1,a2都为short数组
+                  eq = equals((short[]) e1, (short[]) e2);
+              } else if (e1 instanceof int[] && e2 instanceof int[]) {
+                  //a1,a2都为int数组
+                  eq = equals((int[]) e1, (int[]) e2);
+              } else if (e1 instanceof long[] && e2 instanceof long[]) {
+                  //a1,a2都为整数数组
+                  eq = equals((long[]) e1, (long[]) e2);
+              } else if (e1 instanceof float[] && e2 instanceof float[]) {
+                  //a1,a2都为float数组
+                  eq = equals((float[]) e1, (float[]) e2);
+              } else if (e1 instanceof double[] && e2 instanceof double[]) {
+                  //a1,a2都为double数组
+                  eq = equals((double[]) e1, (double[]) e2);
+              } else if (e1 instanceof boolean[] && e2 instanceof boolean[]) {
+                  //a1,a2都为boolean数组
+                  eq = equals((boolean[]) e1, (boolean[]) e2);
+              } else {
+                  eq = e1.equals(e2);
+              }
+      
+              return eq;
+          }
+      ```
 
-   - 当对象为基本数据类型(除浮点型)时，可直接使用``==``进行相等判断。
 
-     ```java
-     //==================基本数据类型(除浮点型)判断模板===============
-         /**
-          * 判断两个int数组对象是否相等
-          * @param a1 数组对象1
-          * @param a2 数组对象2
-          * @return 两对象是否相等
-          */
-         public static boolean equals(int[] a1, int[] a2) {
-             //判断地址是否相等
-             if (a1 == a2) {
-                 return true;
-             }
-     
-             //如果其中一个对象为空，返回false
-             if (a1 == null || a2 == null) {
-                 return false;
-             }
-     
-             //判断数组长度是否相等
-             int length = a1.length;
-             if (a2.length != length) {
-                 return false;
-             }
-     
-             //判断其中每个索引的元素是否相等
-             for (int i = 0; i < length; i++) {
-                 if (a1[i] != a2[i]) {
-                     return false;
-                 }
-             }
-             return true;
-         }
-     ```
 
-   - 当对象为浮点类型时，需要使用``Math.abs(a1[i]-a2[i])>0``作为判断条件，大于0，代表不相等。因为浮点型使用``==``判断，不精确
+- 当对象类型为``Object``时，需要递归调用``deepEquals0()``方法。因为``Object``类型可能为数组类型。
 
-     ```
-     //=============浮点型判断模板===============
-         /**
-          * 判断两个double数组对象是否相等
-          * @param a1 数组对象1
-          * @param a2 数组对象2
-          * @return 两对象是否相等
-          */
-         public static boolean equals(double[] a1, double[] a2) {
-             //判断地址是否相等
-             if (a1 == a2) {
-                 return true;
-             }
-     
-             //如果其中一个对象为空，返回false
-             if (a1 == null || a2 == null) {
-                 return false;
-             }
-     
-             //判断数组长度是否相等
-             int length = a1.length;
-             if (a2.length != length) {
-                 return false;
-             }
-     
-             //判断其中每个索引的元素是否相等
-             for (int i = 0; i < length; i++) {
-                 //判断差额绝对值如果大于0，则返回false
-                 if (Math.abs(a1[i] - a2[i])>0) {
-                     return false;
-                 }
-             }
-             return true;
-         }
-     ```
+  ```java
+  //============Object类型==================
+      /**
+       * 深层判断，两个Objects是否相等
+       * @param a1 数组1
+       * @param a2 数组2
+       * @return 两对象是否相等
+       */
+      private static boolean deepEquals(Object[] a1, Object[] a2) {
+          //地址是否相等
+          if (a1 == a2) {
+              return true;
+          }
+  
+          //其中一个为空，返回false
+          if (a1 == null || a2 == null) {
+              return false;
+          }
+  
+          //判断数组长度是否相等
+          if (a1.length != a2.length) {
+              return false;
+          }
+  
+          //针对每个元素判断相等
+          for (int i = 0,length = a1.length; i < length; i++) {
+              Object e1 = a1[i];
+              Object e2 = a2[i];
+              if (e1 == e2) {
+                  return true;
+              }
+              if (e1 == null || e2 == null) {
+                  return false;
+              }
+              //因为元素 可能为数组对象，所以调用deepEquals0进行判断
+              boolean eq = deepEquals0(e1, e2);
+              if (!eq) {
+                  return false;
+              }
+          }
+          return true;
+      }
+  ```
+
+- 当对象为基本数据类型(除浮点型)时，可直接使用``==``进行相等判断。
+
+  ```java
+  //==================基本数据类型(除浮点型)判断模板===============
+      /**
+       * 判断两个int数组对象是否相等
+       * @param a1 数组对象1
+       * @param a2 数组对象2
+       * @return 两对象是否相等
+       */
+      public static boolean equals(int[] a1, int[] a2) {
+          //判断地址是否相等
+          if (a1 == a2) {
+              return true;
+          }
+  
+          //如果其中一个对象为空，返回false
+          if (a1 == null || a2 == null) {
+              return false;
+          }
+  
+          //判断数组长度是否相等
+          int length = a1.length;
+          if (a2.length != length) {
+              return false;
+          }
+  
+          //判断其中每个索引的元素是否相等
+          for (int i = 0; i < length; i++) {
+              if (a1[i] != a2[i]) {
+                  return false;
+              }
+          }
+          return true;
+      }
+  ```
+
+- 当对象为浮点类型时，需要使用``Math.abs(a1[i]-a2[i])>0``作为判断条件，大于0，代表不相等。因为浮点型使用``==``判断，不精确
+
+  ```
+  //=============浮点型判断模板===============
+      /**
+       * 判断两个double数组对象是否相等
+       * @param a1 数组对象1
+       * @param a2 数组对象2
+       * @return 两对象是否相等
+       */
+      public static boolean equals(double[] a1, double[] a2) {
+          //判断地址是否相等
+          if (a1 == a2) {
+              return true;
+          }
+  
+          //如果其中一个对象为空，返回false
+          if (a1 == null || a2 == null) {
+              return false;
+          }
+  
+          //判断数组长度是否相等
+          int length = a1.length;
+          if (a2.length != length) {
+              return false;
+          }
+  
+          //判断其中每个索引的元素是否相等
+          for (int i = 0; i < length; i++) {
+              //判断差额绝对值如果大于0，则返回false
+              if (Math.abs(a1[i] - a2[i])>0) {
+                  return false;
+              }
+          }
+          return true;
+      }
+  ```
 
 3. 如果不为数组，使用``e1.equals(e2)``判断。
 
@@ -346,7 +352,249 @@ java.util
 
 
 
+## interface Iterator
+
+迭代器接口
+
+### 所在包
+
+``java.util``
+
+### 定义
+
+``public interface Iterator<T>``
+
+### 方法
+
+#### hasNext()
+
+``boolean hasNext()``
+
+##### 实现规则
+
+如果还有下一个元素则返回``true``
 
 
-   
+
+#### next()
+
+``T next()``
+
+##### 实现规则:
+
+返回下一个元素。如果没有下一个元素，则抛出``NoSuchElementException``
+
+
+
+#### remove()
+
+``default void remove()``
+
+##### 实现详情
+
+直接抛出``UnsupportedOperationException("remove")``
+
+实现类可以不实现该方法，但是如果未实现该方法，将报错。
+
+##### 重载细节
+
+
+
+#### forEachRemaining()
+
+``default void forEachRemaining(Consumer<? super T> action) ``
+
+##### 实现细节:
+
+1. 判断action函数非空
+2. 对剩余元素进行迭代，将action函数作用于剩余元素中。
+
+
+## interface Collection
+
+集合框架的根接口。
+
+### 定义
+
+``public interface MyCollection<T> extends Iterable<T>``
+
+### 方法
+
+#### size()
+
+返回集合中的元素数量,如果数量大于int类型可表示的最大的值，则返回int的最大值( Integer.MAX_VALUE)
+
+``int size()``
+
+#### isEmpty()
+
+如果这个集合没有任何元素返回``true``
+
+``boolean isEmpty()``
+
+#### contains(T)
+
+如果这个集合包含指定元素obj,则返回`` true``
+当且仅当该集合包含至少一个元素 且`` obj == null ? e == null : obj.equals(e);``
+
+``boolean contains(T obj)``
+
+#### toArray()
+
+将该集合转化为数组对象
+
+``T[] toArray()``
+
+#### add(T)
+
+添加元素到该集合，如果添加成功返回``true``
+
+``boolean add(T e)``
+
+#### remove(T)
+
+在集合中，删除特定的元素。如果移除成功返回``true``
+
+``boolean remove(T e)``
+
+#### containsAll(Collection<T>)
+
+针对传入参数 collection中的所有元素，是否包含在当前集合中，如果都包含，返回``true``
+
+``boolean containsAll(Collection<T> collection)``
+
+#### addAll(Collection<T>)
+
+将传入集合中所有元素，添加到当前集合中，如果添加成功返回``true``
+
+``boolean addAll(Collection<? extends T> collection)``
+
+#### removeAll(Collection<T>)
+
+将传入集合中所有元素，从当前集合中删除，如果至少一个元素被删除成功则返回``true``
+
+``boolean removeAll(Collection<? extends T> collection);``
+
+#### removeIf(Predicate<T>)
+
+传入一个判断函数，对集合进行迭代，如果符合判断条件，则对其进行删除。如果其中有一个元素被删除，则返回``true``
+
+``default boolean removeIf(Predicate<? super T> filter)``
+
+#### retainAll(Collection<T>)
+
+当前集合 只保留传入集合的元素，其余元素删除。如果该集合发生改变，则返回``true``
+
+``boolean retainAll(Collection<? extends T> collection);``
+
+#### clear()
+
+清空集合
+
+``void clear()``
+
+#### equals(Object)
+
+判断对象是否相等
+
+``boolean equals(Object obj);``
+
+#### hashCode()
+
+计算哈希值
+
+``int hashCode();``
+
+
+
+# java.util.function
+
+## interface Consumer
+
+函数式接口，接收一个参数，并对这个参数进行处理。
+
+### 定义
+
+```java
+@FunctionalInterface
+public interface Consumer<T>
+```
+
+### 方法
+
+#### accept()
+
+``void accept(T t)``
+
+##### 实现规则
+
+接收一个参数，并对该参数进行处理。
+
+
+
+## interface Predicate
+
+函数式接口，接收一个参数，并判断是否符合条件。
+
+### 定义
+
+```java
+@FunctionalInterface
+public interface MyPredicate<T>
+```
+
+### 方法
+
+#### test()
+
+``boolean test(T obj)``
+
+接收一个参数，根据条件进行判断，返回``boolean``类型
+
+#### and()
+
+``default MyPredicate<T> and(MyPredicate<? super T> other) ``
+
+根据规则``predicate1 && predicate2``组合成一个新的``Predicate``
+
+##### 默认实现
+
+```java
+default MyPredicate<T> and(MyPredicate<? super T> other) {
+        Objects.requireNonNull(other);
+        return (t) -> test(t) && other.test(t);
+    }
+```
+
+#### or()
+
+根据规则``predicate1 || predicate2``组合成一个新的``Predicate``
+
+``default MyPredicate<T> and(MyPredicate<? super T> other) ``
+
+#### negate()
+
+``default MyPredicate<T> or(MyPredicate<? super T> other) ``
+
+返回一个``Predicate``对象，规则为``!predicate``
+
+
+
+#### isEquals()
+
+``static<T> Predicate<T> isEquals(Object targetRef) ``
+
+返回一个``Predicate``对象，规则为:``targetRef.equals(obj)``
+
+如果targetRef为null，返回``Objects.isNull()``
+
+
+
+
+
+
+
+
+
+
 
