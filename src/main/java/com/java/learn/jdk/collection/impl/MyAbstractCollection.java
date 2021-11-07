@@ -70,26 +70,74 @@ public abstract class MyAbstractCollection<T> implements MyCollection<T> {
     }
 
     /**
+     * 将该集合转化为数组对象，数据类型为 array的数据类型
+     * 返回包含该集合中所有元素的数组; 返回数组的运行时类型为指定数组的运行时类型。数组的大小为 Max(当前集合实际大小，array数组大小)
+     * @param array 指定数据类型的数组
+     * @param <E> 指定数据类型
+     * @return 转化后的数组对象
+     */
+    @Override
+    public <E> E[] toArray(E[] array) {
+        int size = size();
+        //初始化数组，数组大小为 集合大小和指定数组大小的较大值
+        E[] result = array.length > size ? array :
+                (E[]) Array.newInstance(array.getClass().getComponentType(), size);
+        //迭代填充数组
+        MyIterator iterator = iterator();
+        int forLength = result.length;
+        for (int i = 0; i < forLength; i++) {
+            //如果迭代次数小于循环大小时，需要确定返回数组的长度
+            if (!iterator.hasNext()) {
+
+                if (result == array) {
+                    //将余下的位置 置为空
+                    for (; i < forLength; i++) {
+                        result[i] = null;
+                    }
+                    return result;
+                } else if (array.length < i) {
+                    //当i>array.length，则返回数组长度为迭代次数
+                    return MyArrays.copyOf(result, i);
+                } else {
+                    //当 i 介于 array.length 和 size 之间时， 返回的数组长度为array.length
+                    if (array.length > i) {
+                        System.arraycopy(result,0, array,0 ,i);
+                        for (; i < forLength; i++) {
+                            array[i] = null;
+                        }
+                        return array;
+                    }
+                }
+            }
+            //填充数据
+            result[i] = (E) iterator.next();
+        }
+        //如果迭代器中还有数据，则扩大数组，将剩下的数据填充到数组中
+        return iterator.hasNext() ? finishToArray(result, iterator) : result;
+    }
+
+    /**
      * 当迭代器返回比预期更多的元素时，重新分配toArray中使用的数组，并从迭代器中完成填充。
-     * @param result 数组充满了先前存储的元素
+     * @param array 数组充满了先前存储的元素
      * @param iterator 在此集合上进行中的迭代器
+     * @param <E> 与result数组匹配的数据类型
      * @return 包含给定数组中的元素以及迭代器返回的其他元素的数组，并修剪为大小
      */
-    private T[] finishToArray(T[] result, MyIterator<T> iterator){
-        int size = result.length;
+    private<E> E[] finishToArray(E[] array, MyIterator<?> iterator){
+        int size = array.length;
         //循环:迭代器进行迭代，迭代至 没有下一个元素
         while (iterator.hasNext()) {
-            int cap = result.length;
+            int cap = array.length;
             //判断数组是否已满
             if (size == cap) {
                 //扩充容积
                 //将数据复制到更大的数组
-                result = MyArrays.copyOf(result,  expansionCap(cap));
+                array = MyArrays.copyOf(array,  expansionCap(cap));
             }
             //迭代元素，填充数组
-            result[size++] = iterator.next();
+            array[size++] = (E) iterator.next();
         }
-        return result;
+        return array;
     }
 
     /**

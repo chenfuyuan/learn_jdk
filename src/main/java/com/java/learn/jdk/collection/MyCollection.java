@@ -42,7 +42,13 @@ public interface MyCollection<T> extends MyIterable<T> {
     T[] toArray();
 
 
-    //<E> E toArray(E[] array);
+    /**
+     * 将该集合转化为数组对象，数据类型为 array的数据类型
+     * @param array 指定数据类型的数组
+     * @param <E> 指定数据类型
+     * @return 转化后的数组对象
+     */
+    <E> E[] toArray(E[] array);
 
     /**
      * 添加元素到该集合，如果添加成功返回{@code true}
