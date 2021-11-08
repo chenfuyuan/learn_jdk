@@ -3,6 +3,8 @@ package com.java.learn.jdk.util;
 import junit.framework.TestCase;
 import org.junit.Test;
 
+import java.util.Objects;
+
 /**
  * @Description: MyObjects测试
  * @Author: chenfuyuan
@@ -24,6 +26,13 @@ public class MyObjectsTest extends TestCase {
         System.out.println("String(相等字符串):" + eq);
         eq = MyObjects.equals(str_01, str_03);
         System.out.println("String(不相等字符串):" + eq);
+    }
+
+    @Test
+    public void testTestEquals_02() {
+        Object obj_01 = null;
+        Object obj_02 = null;
+        System.out.println(MyObjects.equals(obj_01,obj_02));
     }
 
     @Test

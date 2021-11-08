@@ -1,6 +1,6 @@
 package com.java.learn.jdk.util;
 
-import java.util.function.Consumer;
+
 
 /**
  * @Description: Objects工具类
@@ -19,31 +19,27 @@ public final class MyObjects {
     /**
      * 判断两个对象是否相等
      * 相等条件:
-     * 1. 地址相等
+     * 1. 地址相等 或 都为null
      * 2. 调用 obj1.equals(obj2)返回true
-     * 一方为null,返回false
+     *
      * @param obj1 对象1
      * @param obj2 对象2
      * @return 两对象是否相等
      */
     public static boolean equals(Object obj1, Object obj2) {
         //对象地址是否相等
-        if (obj1 == obj2) {
+        /*if (obj1 == obj2) {
             return true;
         }
-
-        //对象一方为空，返回false
-        if (obj1 == null || obj2 == null) {
-            return false;
-        }
-
         //调用对象equals方法，比较是否相等
-        return obj1.equals(obj2);
+        return obj1!=null && obj1.equals(obj2);*/
+        return obj1 == obj2 || (obj1 != null && obj1.equals(obj2));
     }
 
     /**
      * 深层次的比较是否相等，主要用于数组判断
      * 如果对象为数组，会对每个元素进行相等比较
+     *
      * @param obj1 对象1
      * @param obj2 对象2
      * @return 两对象是否相等
@@ -60,6 +56,7 @@ public final class MyObjects {
     /**
      * 根据对象生成哈希值
      * 如果对象为空,返回0,否则调用对象的hashCode()方法
+     *
      * @param obj 对象
      * @return 哈希值
      */
@@ -71,6 +68,7 @@ public final class MyObjects {
     /**
      * 判断对象是否为null
      * 如果对象为null，抛出NullPointerException
+     *
      * @param obj 对象
      * @param <T> 引用对象的类型
      * @return 如果对象不为null，返回该对象

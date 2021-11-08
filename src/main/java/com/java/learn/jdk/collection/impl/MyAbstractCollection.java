@@ -3,6 +3,7 @@ package com.java.learn.jdk.collection.impl;
 import com.java.learn.jdk.collection.MyCollection;
 import com.java.learn.jdk.collection.MyIterator;
 import com.java.learn.jdk.util.MyArrays;
+import com.java.learn.jdk.util.MyObjects;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -158,5 +159,45 @@ public abstract class MyAbstractCollection<T> implements MyCollection<T> {
         return newCap;
     }
 
+    /**
+     *
+     * {@inheritDoc}
+     *
+     * <p>这个方法固定抛出<tt>UnsupportedOperationException</tt>异常
+     *
+     * @throws UnsupportedOperationException {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     * @throws IllegalStateException {@inheritDoc}
+     * @throws ClassCastException {@inheritDoc}
+     */
+    public boolean add(T obj) {
+        throw new UnsupportedOperationException();
+    }
 
+    /**
+     * {@inheritDoc}
+     *
+     *
+     * <p>此实现将遍历集合 以 查找指定的元素。如果找到该元素，则使用迭代器的<tt>remove</tt>方法从集合中删除该元素。
+     *
+     * 如果集合中包含多个指定元素，只会删除第一个匹配到的元素，并返回{@code true}
+     *
+     * <p>如果该集合的迭代器 没有实现<tt>remove</tt>方法，则应该抛出<tt>UnsupportedOperationException</tt>异常
+     *
+     * @throws UnsupportedOperationException
+     * @throws ClassCastException
+     * @throws NullPointerException
+     */
+    public boolean remove(T element){
+        MyIterator<T> iterator = iterator();
+        while (iterator.hasNext()) {
+            //判断是否包含指定元素
+            if (MyObjects.equals(element,iterator.next())) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
+    }
 }
