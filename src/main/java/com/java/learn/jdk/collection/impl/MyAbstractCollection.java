@@ -4,10 +4,10 @@ import com.java.learn.jdk.collection.MyCollection;
 import com.java.learn.jdk.collection.MyIterator;
 import com.java.learn.jdk.util.MyArrays;
 import com.java.learn.jdk.util.MyObjects;
+import sun.security.provider.MD2;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -42,8 +42,8 @@ public abstract class MyAbstractCollection<T> implements MyCollection<T> {
      * @return 集合是否包含元素obj
      */
     @Override
-    public boolean contains(T obj) {
-        MyIterator<T> iterator = iterator();
+    public boolean contains(Object obj) {
+        Iterator<T> iterator = iterator();
         while (iterator.hasNext()) {
             if (Objects.equals(obj, iterator.next())) {
                 return true;
@@ -59,7 +59,7 @@ public abstract class MyAbstractCollection<T> implements MyCollection<T> {
     @Override
     public T[] toArray() {
         T[] result = (T[]) new Object[size()];
-        MyIterator<T> iterator = iterator();
+        Iterator<T> iterator = iterator();
         for (int i = 0; i < result.length; i++) {
             if (!iterator.hasNext()) {    //如果已经迭代到了最后一个，生成一个新的数组,长度为i(迭代的次数即数组的真实长度)
                 return Arrays.copyOf(result, i);
@@ -84,7 +84,7 @@ public abstract class MyAbstractCollection<T> implements MyCollection<T> {
         E[] result = array.length > size ? array :
                 (E[]) Array.newInstance(array.getClass().getComponentType(), size);
         //迭代填充数组
-        MyIterator iterator = iterator();
+        Iterator iterator = iterator();
         int forLength = result.length;
         for (int i = 0; i < forLength; i++) {
             //如果迭代次数小于循环大小时，需要确定返回数组的长度
@@ -124,7 +124,7 @@ public abstract class MyAbstractCollection<T> implements MyCollection<T> {
      * @param <E> 与result数组匹配的数据类型
      * @return 包含给定数组中的元素以及迭代器返回的其他元素的数组，并修剪为大小
      */
-    private<E> E[] finishToArray(E[] array, MyIterator<?> iterator){
+    private<E> E[] finishToArray(E[] array, Iterator<?> iterator){
         int size = array.length;
         //循环:迭代器进行迭代，迭代至 没有下一个元素
         while (iterator.hasNext()) {
@@ -190,7 +190,7 @@ public abstract class MyAbstractCollection<T> implements MyCollection<T> {
      * @throws NullPointerException
      */
     public boolean remove(T element){
-        MyIterator<T> iterator = iterator();
+        Iterator<T> iterator = iterator();
         while (iterator.hasNext()) {
             //判断是否包含指定元素
             if (MyObjects.equals(element,iterator.next())) {
@@ -199,5 +199,124 @@ public abstract class MyAbstractCollection<T> implements MyCollection<T> {
             }
         }
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>这个实现在指定集合collection进行迭代，依次检查迭代器返回的每个元素是否包含在当前集合中，如果不包含则返回{@code false}。经过迭代如果所有元素都包含着当前集合中，则返回{@code true}</p>
+     *
+     * @throws ClassCastException
+     * @throws NullPointerException
+     */
+    @Override
+    public boolean containsAll(MyCollection<?> collection) {
+        MyObjects.requireNonNull(collection);
+        for (Object element : collection) {
+            if (!contains(element)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>这个实现 对指定集合collection进行迭代，依次将每个元素调用add方法添加到当前集合中。如果有一个元素添加成功，则返回结果为{@code true}</p>
+     *
+     * <p>注意 add 方法会 固定抛出<tt>UnsupportedOperationException</tt>。需要对dd方法进行重写</p>
+     *
+     * @throws UnsupportedOperationException
+     * @throws ClassCastException
+     * @throws NullPointerException
+     * @throws IllegalArgumentException
+     * @throws IllegalStateException
+     */
+    @Override
+    public boolean addAll(MyCollection<? extends T> collection) {
+        MyObjects.requireNonNull(collection);
+        boolean modified = false;
+        for (T element : collection) {
+            //调用add方法添加
+            if (add(element)) {
+                modified = true;
+            }
+        }
+        return modified;
+    }
+
+    /**
+     *
+     *{@inheritDoc}
+     *
+     *
+     */
+    @Override
+    public boolean removeAll(MyCollection<T> collection) {
+        MyObjects.requireNonNull(collection);
+        boolean modified = false;
+        Iterator<T> iterator = iterator();
+
+        while (iterator.hasNext()) {
+            if (collection.contains(iterator.next())) {
+                iterator.remove();
+                modified = true;
+            }
+        }
+
+        return modified;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param collection 需要保留的集合元素
+     * @return
+     */
+    @Override
+    public boolean retainAll(MyCollection<?> collection) {
+        MyObjects.requireNonNull(collection);
+        boolean modified = false;
+
+        Iterator<T> iterator = iterator();
+
+        while (iterator.hasNext()) {
+            if (!collection.contains(iterator.next())) {
+                iterator.remove();
+                modified = true;
+            }
+
+        }
+        return modified;
+    }
+
+    @Override
+    public void clear() {
+        Iterator<T> iterator = iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
+    }
+
+    @Override
+    public String toString() {
+        Iterator<T> iterator = iterator();
+        if (!iterator.hasNext()) {
+            return "[]";
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        while (iterator.hasNext()) {
+            T element = iterator.next();
+
+            stringBuilder.append(element == this ? "(this Collection)" : element);
+            if (iterator.hasNext()) {
+                stringBuilder.append(", ");
+            }
+        }
+        return stringBuilder.append("]").toString();
     }
 }

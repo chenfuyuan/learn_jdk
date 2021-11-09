@@ -1,9 +1,8 @@
 package com.java.learn.jdk.collection;
 
-import java.util.Collection;
+
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.Spliterators;
 import java.util.function.Predicate;
 
 /**
@@ -11,7 +10,7 @@ import java.util.function.Predicate;
  * @Author: chenfuyuan
  * @Date: 2021/10/30 22:32
  */
-public interface MyCollection<T> extends MyIterable<T> {
+public interface MyCollection<T> extends Iterable<T> {
 
     /**
      * 返回集合中的元素数量,如果数量大于int类型可表示的最大的值，则返回int的最大值( Integer.MAX_VALUE)
@@ -33,7 +32,7 @@ public interface MyCollection<T> extends MyIterable<T> {
      * @throws NullPointerException 如果该对象为空
      * @throws ClassCastException 类型转换异常
      */
-    boolean contains(T obj);
+    boolean contains(Object obj);
 
     /**
      * 将该集合转化为数组对象
@@ -75,7 +74,7 @@ public interface MyCollection<T> extends MyIterable<T> {
      * @param collection 匹配集合
      * @return 如果传入集合中所有元素都包含在当前集合中，则返回true
      */
-    boolean containsAll(Collection<?> collection);
+    boolean containsAll(MyCollection<?> collection);
 
 
     /**
@@ -83,14 +82,14 @@ public interface MyCollection<T> extends MyIterable<T> {
      * @param collection 需要添加的集合
      * @return 添加结果
      */
-    boolean addAll(Collection<? extends T> collection);
+    boolean addAll(MyCollection<? extends T> collection);
 
     /**
      * 将传入集合中所有元素，从当前集合中删除，如果至少一个元素被删除成功则返回{@code true}
      * @param collection 需要删除的集合
      * @return 删除结果
      */
-    boolean removeAll(Collection<? extends T> collection);
+    boolean removeAll(MyCollection<T> collection);
 
     /**
      * 传入一个判断函数，对集合进行迭代，如果符合判断条件，则对其进行删除。如果其中有一个元素被删除，则返回{@code true}
@@ -100,7 +99,7 @@ public interface MyCollection<T> extends MyIterable<T> {
     default boolean removeIf(Predicate<? super T> filter) {
         Objects.requireNonNull(filter);
         boolean removed = false;
-        final MyIterator<T> each = iterator();
+        final Iterator<T> each = iterator();
         while (each.hasNext()) {
             if (filter.test(each.next())) {
                 each.remove();
@@ -115,7 +114,7 @@ public interface MyCollection<T> extends MyIterable<T> {
      * @param collection 需要保留的集合元素
      * @return 保存结果
      */
-    boolean retainAll(Collection<? extends T> collection);
+    boolean retainAll(MyCollection<?> collection);
 
 
     /**
